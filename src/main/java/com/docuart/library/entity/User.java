@@ -37,7 +37,9 @@ public class User {
     @NotNull
     @Max(12)
     @Min(5)
-    private Long userPassword;
+    private String userPassword;
+
+    private String token;
 
 
 

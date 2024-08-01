@@ -1,7 +1,7 @@
 package com.docuart.library.service;
 import com.docuart.library.entity.Book;
 import com.docuart.library.repository.BookRepository;
-import com.docuart.library.utils.GGUtils;
+import com.docuart.library.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class BookServices {
 
     public Book update(Long bookId,Book book){
         Book guncellenecekBook = bookRepository.findById(bookId).orElseThrow(()->new RuntimeException("İd bulunamadı."));
-        GGUtils.copyNonNullProperties(book,guncellenecekBook);
+        Utils.copyNonNullProperties(book,guncellenecekBook);
         return bookRepository.save(guncellenecekBook);
     }
 

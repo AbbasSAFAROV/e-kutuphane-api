@@ -1,10 +1,6 @@
 package com.docuart.library.service;
-import com.docuart.library.entity.Book;
 import com.docuart.library.entity.User;
-import com.docuart.library.entity.UserBook;
-import com.docuart.library.repository.BookRepository;
-import com.docuart.library.repository.UserBookRepository;
-import com.docuart.library.utils.GGUtils;
+import com.docuart.library.utils.Utils;
 import com.docuart.library.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +25,7 @@ public class UserServices {
 
     public User update(Long userId,User user){
         User guncellenecekUser = userRepository.findById(userId).orElseThrow(()->new RuntimeException("İd bulunamadı."));
-        GGUtils.copyNonNullProperties(user,guncellenecekUser);
+        Utils.copyNonNullProperties(user,guncellenecekUser);
         return userRepository.save(guncellenecekUser);
     }
 
