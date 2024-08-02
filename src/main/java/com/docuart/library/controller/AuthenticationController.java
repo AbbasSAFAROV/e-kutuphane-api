@@ -3,6 +3,7 @@ package com.docuart.library.controller;
 
 import com.docuart.library.entity.User;
 import com.docuart.library.repository.UserRepository;
+import com.docuart.library.service.UserServices;
 import com.docuart.library.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -20,28 +23,24 @@ public class AuthenticationController {
     private JwtUtil jwtUtil;
 
     @Autowired
-    private UserRepository userRepository;
-    private PasswordEncoder passEncoder = new BCryptPasswordEncoder();
+    private UserServices userServices;
+
+    private final PasswordEncoder passEncoder = new BCryptPasswordEncoder();
+
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User authRequest) throws Exception {
-        User user = userRepository.findByUsername(authRequest.getUsername()).orElseThrow(()-> new RuntimeException("Kullanici bulunamadi ..."));
-        String jwt =jwtUtil.generateToken(user.getUsername(),null);
+        Optional<User> user = this.userServices.login(authRequest);
 
-        Boolean isMatch = passEncoder.matches(authRequest.getUserPassword(), user.getUserPassword());
+        String jwt = jwtUtil.generateToken(user.get().getUsername(),null);
+
+        boolean isMatch = passEncoder.matches(authRequest.getUserPassword(), user.get().getUserPassword());
+
         if (!isMatch) {
             throw new Exception("Kullanıcı adı veya parola hatalı");
         }
-        user.setToken(jwt);
+
+        user.get().setToken(jwt);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
-
-//    function handleLogoutClick() {
-//        localStorage.removeItem(userKey);
-//        localStorage.removeItem(usersKey);
-//        localStorage.removeItem(vekilKey);
-//        axiosData.user = null;
-//        deleteSubjects();
-//        history.push('/login');
-//    }
-
 }

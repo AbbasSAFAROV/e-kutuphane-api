@@ -20,8 +20,6 @@ public class User {
 
     @Column(name = "user_name")
     @NotNull
-    @NotBlank
-    @Max(30)
     private String username;
 
     @Column(name = "user_surname")

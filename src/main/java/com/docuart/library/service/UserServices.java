@@ -3,6 +3,8 @@ import com.docuart.library.entity.User;
 import com.docuart.library.utils.Utils;
 import com.docuart.library.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.Optional;
 @Service
 public class UserServices {
 
+    private final PasswordEncoder passEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     private UserRepository userRepository;
@@ -20,6 +23,7 @@ public class UserServices {
     }
 
     public User add(User user){
+        user.setUserPassword(passEncoder.encode(user.getUserPassword()));
         return userRepository.save(user);
     }
 
@@ -35,18 +39,14 @@ public class UserServices {
         return "Silme işlemi başarılı.";
     }
 
-    public User login(User user){
-        Optional<User> user1 = userRepository.findByUsername(user.getUsername());
-        if (user1.isPresent()) {
-            if ((user1.get().getUsername().equals(user.getUsername()) && (user1.get().getUserPassword().equals(user.getUserPassword())))) {
-                return user;
-            } else {
-                throw new RuntimeException("Geçersiz kullanici adı ve şifre");
-            }
-        } else {
+    public Optional<User> login(User authRequest){
+        Optional<User> user = this.userRepository.findByUsername(authRequest.getUsername());
+
+        if (!user.isPresent()) {
             throw new RuntimeException("Kullanici bulunamadi ...");
         }
 
+        return user;
     }
 
 
