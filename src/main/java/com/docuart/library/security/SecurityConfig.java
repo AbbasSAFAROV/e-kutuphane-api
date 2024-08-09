@@ -27,7 +27,7 @@ public class SecurityConfig {
         http
                 .csrf().disable().cors().and()
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/home", "/auth/**","/api/user/**","/swagger-ui/**","/swagger-ui/index.html#/**","/swagger-ui/index.html#").permitAll()
+                        .requestMatchers("/", "/home", "/auth/**","/api/user/**","/api/book/**","/swagger-ui/**","/swagger-ui/index.html#/**","/swagger-ui/index.html#","/dashboard").permitAll()
                         .anyRequest().authenticated()
                 )
                 .logout((logout) -> logout.permitAll());

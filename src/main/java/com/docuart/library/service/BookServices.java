@@ -50,4 +50,8 @@ public class BookServices {
         return "Güncellendi işlemi başarılı.";
     }
 
+    public Long getcountbooks(){
+        return bookRepository.countBooks();
+    }
+
 }

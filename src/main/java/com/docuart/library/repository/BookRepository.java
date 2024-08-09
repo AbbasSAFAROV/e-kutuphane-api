@@ -16,4 +16,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             " order by book_id desc ", nativeQuery = true)
     List<Book> findAllBooks();
 
+
+    @Query("SELECT COUNT(b) FROM Book b")
+    long countBooks();
+
 }

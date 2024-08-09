@@ -19,6 +19,8 @@ public class UserController {
     public ResponseEntity<?> findAll(){
         return new ResponseEntity<>(userServices.findAll(), HttpStatus.OK);
     }
+
+
     @PostMapping
     public ResponseEntity<?> save(@RequestBody User user){
         return new ResponseEntity<>(userServices.add(user),HttpStatus.CREATED);
@@ -35,6 +37,10 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user){
         return new ResponseEntity<>(userServices.login(user), HttpStatus.OK);
+    }
+    @GetMapping("/count")
+    public ResponseEntity<Long> getUsersCount(){
+        return new ResponseEntity<>(userServices.getcountusers(),HttpStatus.OK);
     }
 
 }
