@@ -39,4 +39,6 @@ public class Book {
 
     @Column(name = "image_url", length = 1000)
     private String imageUrl;
+
+    private String status;
 }

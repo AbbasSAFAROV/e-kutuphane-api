@@ -13,7 +13,8 @@ import java.util.Optional;
 @Service
 public class UserServices {
 
-    private final PasswordEncoder passEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private  PasswordEncoder passEncoder ;
 
     @Autowired
     private UserRepository userRepository;
